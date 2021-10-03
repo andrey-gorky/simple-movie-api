@@ -1,4 +1,5 @@
 const Movie =  require('../models/movies.model');
+const { move } = require('../routes/index.route');
 
 exports.createOne = async (req, res, next) => {
     try {
@@ -23,7 +24,9 @@ exports.createOne = async (req, res, next) => {
 
 exports.deleteOne = async (req, res, next) => {
     try {
-        return res.status(200).json({"message": "Movie DELETED"});
+        // return res.status(200).json({"message": "Movie DELETED"});
+        const movie = await Movie.destroy({ where: { id: req.params.id } });
+        return res.status(200).json(movie);
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -41,7 +44,9 @@ exports.findOne = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
     try {
-        return res.status(200).json({"message": "Movie List Sorted By Title in Alphabetic Order"});
+        // return res.status(200).json({"message": "Movie List Sorted By Title in Alphabetic Order"});
+        const movies = await Movie.findAll({ order: [['title', 'ASC']] });
+        return res.status(200).json(movies);
     } catch (error) {
         return res.status(500).json(error);
     }

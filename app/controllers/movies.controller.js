@@ -54,7 +54,11 @@ exports.findAll = async (req, res, next) => {
 
 exports.findOneByTitle = async (req, res, next) => {
     try {
-        return res.status(200).json({"message": "Movie Found By Title"});
+        // return res.status(200).json({"message": "Movie Found By Title"});
+        const title = req.params.title
+        console.log(title)
+        const movie = await Movie.findOne({ where: { title: title } });
+        return res.status(200).json(movie);
     } catch (error) {
         return res.status(500).json(error);
     }

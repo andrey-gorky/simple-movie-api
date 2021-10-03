@@ -1,6 +1,6 @@
 const User = require('../models/users.model');
 
-exports.createOne = async (req, res, next) => {
+exports.createOne = async (req, res) => {
     try {
         return res.status(200).json({"message": "The user has been created"});
     } catch (error) {
@@ -8,7 +8,7 @@ exports.createOne = async (req, res, next) => {
     }
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
     try {
         return res.status(200).json({"message": "The user has been Logged In"});
     } catch (error) {

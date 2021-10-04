@@ -9,7 +9,7 @@ exports.createOne = async (req, res, next) => {
             release: req.body.Release,
             format: req.body.Format,
         };
-        Movie
+        await Movie
             .create(MOVIE_MODEL)
             .then(movie => res.status(201).json(movie))
             .catch(error => res.status(400).json(error))
@@ -55,8 +55,10 @@ exports.deleteOne = (req, res, next) => {
 exports.findOne = (req, res, next) => {
     return Movie
         .findByPk(req.params.id)
-        .then(movie => res.status(200).send(movie))
-        .catch(error => res.status(500).json(error));
+        .then(movie => {
+            if (movie) return res.status(200).send(movie);
+            return res.status(404).json({message: "Movie not found"});
+        });
 
     // try {
     //     // return res.status(200).json({"message": "SHOW Movie Info"});
@@ -70,8 +72,10 @@ exports.findOne = (req, res, next) => {
 exports.findAll = async (req, res, next) => {
     return Movie
         .findAll({ order: [['title', 'ASC']] })
-        .then(movies => res.status(200).json(movies))
-        .catch(error => res.status(400).json(error));    
+        .then(movies => {
+            if (movies) return res.status(200).send(movies);
+            return res.status(404).json({message: "Movies not found"});
+        });    
     
     // try {
     //     // return res.status(200).json({"message": "Movie List Sorted By Title in Alphabetic Order"});
@@ -86,8 +90,10 @@ exports.findOneByTitle = (req, res, next) => {
     const title = req.params.title
     return Movie
         .findOne({ where: { title: title } })
-        .then(movie => res.status(200).json(movie))
-        .catch(error => res.status(400).json(error));
+        .then(movie => {
+            if (movie) return res.status(200).send(movie);
+            return res.status(404).json({message: "Movie not found"});
+        });
     
     
     // try {

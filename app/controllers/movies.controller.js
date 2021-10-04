@@ -1,4 +1,6 @@
 const Movie =  require('../models/movies.model');
+const Sequelize = require('sequelize');
+
 
 exports.createOne = async (req, res, next) => {
     try {
@@ -44,12 +46,15 @@ exports.findAll = async (req, res, next) => {
 
 exports.findOneByTitle = (req, res, next) => {
     const title = req.params.title
+    const titleQuery = req.query.name
+    console.log(titleQuery)
     return Movie
-        .findOne({ where: { title: title } })
+        .findAll({ where: { title: `${title}` } })
         .then(movie => {
             if (movie) return res.status(200).send(movie);
-            return res.status(404).json({message: "Movie not found"});
-        });
+            return res.status(404).json({message: "Movie with given title not found"});
+        })
+        .catch(error => res.status(500).json(error));
 }
 
 exports.findAllByActor = async (req, res, next) => {

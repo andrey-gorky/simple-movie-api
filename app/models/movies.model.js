@@ -24,6 +24,8 @@ const Movie = db.define('movies', {
     //     type: Sequelize.STRING,
     //     allowNull: false
     // }
+}, {
+    timestamps: false
 });
 
 module.exports = Movie;

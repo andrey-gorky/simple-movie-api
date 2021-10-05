@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../util/database.util');
+const Star = require('../models/stars.model');
 
 const Movie = db.define('movies', {
     id: {
@@ -25,7 +26,7 @@ const Movie = db.define('movies', {
     //     allowNull: false
     // }
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 module.exports = Movie;

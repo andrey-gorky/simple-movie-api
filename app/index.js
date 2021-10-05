@@ -3,6 +3,7 @@ const express = require('express');
 const sequelize = require('./util/database.util');
 const User = require('./models/users.model');
 const Movie = require('./models/movies.model');
+const Star = require('./models/stars.model');
 
 const app = express();
 
@@ -19,12 +20,11 @@ app.use((req, res, next) => {
 app.use('/api/v1', require('./routes/index.route'));
 app.use('/api/v1/users', require('./routes/users.route'));
 app.use('/api/v1/movies', require('./routes/movies.route'));
-// app.use('/api/v1/movies', require('./routes/movies.route'));
 
 (async () =>{
     try {
       await sequelize.sync(
-        {force: false}
+        {alter: true}
       );
       console.log("test");
       app.listen(process.env.EXTERNAL_PORT || 8000);

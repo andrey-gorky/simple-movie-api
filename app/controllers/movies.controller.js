@@ -1,5 +1,10 @@
 const Movie =  require('../models/movies.model');
 const { Op } = require('sequelize');
+const multer = require('multer');
+// const path = require('path')
+const readline = require('readline');
+const fs = require('fs');
+
 
 
 exports.createOne = async (req, res, next) => {
@@ -7,7 +12,6 @@ exports.createOne = async (req, res, next) => {
         const [ ...actors ] = req.body.Stars        
         let stars = new Array();
         actors.map((el) => stars.push({"name": el }));
-        console.log(stars)
         const MOVIE_MODEL = {
             title: req.body.Title,
             release: req.body.Release,
@@ -60,7 +64,7 @@ exports.findOneByTitle = (req, res, next) => {
 }
 
 exports.findAllByActor = async (req, res, next) => {
-    const actor = req.query.actor
+    const actor = req.params.actor
     return Movie
         .findAll({ where: { stars: { [Op.contains]: [ { "name": `${actor}` } ] } } })
         .then(movie => {
@@ -69,3 +73,21 @@ exports.findAllByActor = async (req, res, next) => {
         })
         .catch(error => res.status(500).json(error));
 }
+
+exports.importFromFile = (req, res, next) => { 
+    const file = req.file;
+  
+    if (!file) res.status(404).json({message: "Please upload a file"});
+    const multerText = Buffer.from(file.buffer);   // .toString("utf-8")
+  
+    const result = {
+      fileText: multerText,
+    };
+  
+    return res.status(200).send(result);
+}
+
+// exports.importFromFile = async (req, res, next) => {
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
+// }

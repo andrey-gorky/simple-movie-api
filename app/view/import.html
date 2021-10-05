@@ -9,9 +9,9 @@
   <body>
     <h2>Text File Upload</h2>
 
-    <form action="/import" enctype="multipart/form-data" method="POST">
-      <label for="myFile">Single Text File:</label>
-      <input type="file" name="myFile" accept=".txt"/> <br /><br />
+    <form action="/api/v1/movies/import" enctype="multipart/form-data" method="POST">
+      <label for="importedFile">Single Text File:</label>
+      <input type="file" name="importedFile" accept=".txt"/> <br /><br />
       <input type="submit" value="Submit" />
     </form>
 

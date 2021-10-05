@@ -1,14 +1,18 @@
 const Movie =  require('../models/movies.model');
-const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 
 exports.createOne = async (req, res, next) => {
     try {
-        // return res.status(200).json({"message": "Movie CREATED"});
+        const [ ...actors ] = req.body.Stars        
+        let stars = new Array();
+        actors.map((el) => stars.push({"name": el }));
+        console.log(stars)
         const MOVIE_MODEL = {
             title: req.body.Title,
             release: req.body.Release,
             format: req.body.Format,
+            stars: stars
         };
         await Movie
             .create(MOVIE_MODEL)
@@ -46,8 +50,6 @@ exports.findAll = async (req, res, next) => {
 
 exports.findOneByTitle = (req, res, next) => {
     const title = req.params.title
-    const titleQuery = req.query.name
-    console.log(titleQuery)
     return Movie
         .findAll({ where: { title: `${title}` } })
         .then(movie => {
@@ -58,9 +60,12 @@ exports.findOneByTitle = (req, res, next) => {
 }
 
 exports.findAllByActor = async (req, res, next) => {
-    try {
-        return res.status(200).json({"message": "Movie Found By Actor"});
-    } catch (error) {
-        return res.status(500).json(error);
-    }
+    const actor = req.query.actor
+    return Movie
+        .findAll({ where: { stars: { [Op.contains]: [ { "name": `${actor}` } ] } } })
+        .then(movie => {
+            if (movie) return res.status(200).send(movie);
+            return res.status(404).json({message: "Movie with given actor not found"});
+        })
+        .catch(error => res.status(500).json(error));
 }

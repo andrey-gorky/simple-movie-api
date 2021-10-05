@@ -1,30 +1,29 @@
-const Sequelize = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../util/database.util');
-const Star = require('../models/stars.model');
 
 const Movie = db.define('movies', {
     id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
     title: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     release: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     format: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    stars: {
+        type: DataTypes.ARRAY(DataTypes.JSONB),
         allowNull: false
     }
-    // stars: {
-    //     type: Sequelize.STRING,
-    //     allowNull: false
-    // }
 }, {
     timestamps: true
 });

@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('../util/database.util');
-const Star = require('../models/stars.model');
 
 const Movie = db.define('movies', {
     id: {
@@ -21,10 +20,6 @@ const Movie = db.define('movies', {
         type: Sequelize.STRING,
         allowNull: false
     }
-    // stars: {
-    //     type: Sequelize.STRING,
-    //     allowNull: false
-    // }
 }, {
     timestamps: true
 });

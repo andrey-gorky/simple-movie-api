@@ -3,7 +3,6 @@ const express = require('express');
 const sequelize = require('./util/database.util');
 const User = require('./models/users.model');
 const Movie = require('./models/movies.model');
-const Star = require('./models/stars.model');
 
 const app = express();
 

@@ -1,6 +1,4 @@
 const Movie =  require('../models/movies.model');
-const Sequelize = require('sequelize');
-
 
 exports.createOne = async (req, res, next) => {
     try {
@@ -10,6 +8,8 @@ exports.createOne = async (req, res, next) => {
             release: req.body.Release,
             format: req.body.Format,
         };
+        const stars = req.body.stars;
+        console.log(stars);
         await Movie
             .create(MOVIE_MODEL)
             .then(movie => res.status(201).json(movie))

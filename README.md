@@ -9,7 +9,7 @@ In addition, there is an option to upload the .txt with movies info to store in 
 Before you begin, ensure you have met the following requirements:
 * You have installed the latest version of docker on your machine;
 * You have Postman on your machine;
-* Clone current repository to your local machine.
+* Clone this repository to your local machine.
 
 ## Installing and Running WebbyLab Movie API
 
@@ -30,8 +30,7 @@ docker compose up
 To use WebbyLab Movie API, follow these steps:
 
 * Feel free to import postman collection by the link: [WebbyLab Movie API Postman collection](https://www.getpostman.com/collections/ff992216bae21b20847e);
-* To import data from .txt file through simplest gui, you should go to <http://localhost:8000/api/v1/import>;
-* Clone current repository to your local machine;
+* To import data from .txt file through simplest gui, you should go to <http://localhost:8000/api/v1/import>. The .txt sample file added to the project, you can find it in './mock' folder;
 * Enjoy.
 
 

@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   node_backend:
-    container_name: webbylab_movies
-    image: webbylab_movies:0.0.2
+    container_name: webbylab_movies_andrey
+    image: webbylab_movies_andrey:0.0.2
     build:
       context: .
     ports:

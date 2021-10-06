@@ -41,7 +41,7 @@ exports.findOne = (req, res, next) => {
 }
 
 exports.findAll = async (req, res, next) => {
-    return Movie
+    await Movie
         .findAll({ order: [['title', 'ASC']] })
         .then(movies => {
             if (movies) return res.status(200).send(movies);
@@ -54,8 +54,8 @@ exports.findOneByTitle = (req, res, next) => {
     return Movie
         .findAll({ where: { title: `${title}` } })
         .then(movie => {
-            if (movie) return res.status(200).send(movie);
-            return res.status(404).json({message: "Movie with given title not found"});
+            if (!movie) return res.status(404).json({message: "Movie with given title not found"});
+            return res.status(200).send(movie);            
         })
         .catch(error => res.status(500).json(error));
 }
@@ -65,8 +65,8 @@ exports.findAllByActor = async (req, res, next) => {
     return Movie
         .findAll({ where: { stars: { [Op.contains]: [ { "name": `${actor}` } ] } } })
         .then(movie => {
-            if (movie) return res.status(200).send(movie);
-            return res.status(404).json({message: "Movie with given actor not found"});
+            if (!movie) return res.status(404).json({message: "Movie with given actor not found"});
+            return res.status(200).send(movie);            
         })
         .catch(error => res.status(500).json(error));
 }
@@ -77,22 +77,36 @@ exports.importFromFile = (req, res, next) => {
     if (!file) res.status(404).json({message: "Please upload a file"});
   
     const multerText = Buffer.from(file.buffer).toString('utf-8').split(/\r?\n/);
+    const filteredMovies = multerText.filter(line => line !== "")
+
+    const storeData = async (movie) => {
+        await Movie.create(movie);
+    };
 
     let moviesArray = [];
     let movie = {}
-    
-    multerText.forEach((line) => {
-        line.startsWith("Title: ") ? movie.title = line.split("Title: ")[1] :
-        line.startsWith("Release Year: ") ? movie.release = parseInt(line.split("Release Year: ")[1], 10) :
-        line.startsWith("Format: ") ? movie.format = line.split("Format: ")[1] :
-        line.startsWith("Stars: ") ? movie.stars = line.split("Stars: ")[1].split(', ') :
-        moviesArray.push(movie)
-    });
 
-    const storeData = async (moviesArray) => {
-        await Promise.all(moviesArray.map((movie) => Movie.create(movie)))
-    };
-    storeData(moviesArray);
-
+    for (let line of filteredMovies) {
+        if (movie.stars === undefined || movie.stars.length > 0) {
+            movie = {
+                title: "",
+                release: 0,
+                format: "",
+                stars: []
+            }
+        }
+        if (line.startsWith("Title: ")) {
+            movie.title = line.split("Title: ")[1]
+        } else if (line.startsWith("Release Year: ")) {
+            movie.release = parseInt(line.split("Release Year: ")[1], 10)
+        } else if (line.startsWith("Format: ")) {
+            movie.format = line.split("Format: ")[1]
+        } else if (line.startsWith("Stars: ")) {
+            movie.stars = line.split("Stars: ")[1].split(', ');
+            movie.stars = movie.stars.map(star => ({name: star}))
+            moviesArray.push(movie)
+        }
+    }
+    Promise.all(moviesArray.map((movie) => Movie.create(movie)))
     return res.status(200).send(moviesArray);
 }

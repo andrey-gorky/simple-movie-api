@@ -91,8 +91,8 @@ exports.importFromFile = (req, res, next) => {
 
     const storeData = async (moviesArray) => {
         await Promise.all(moviesArray.map((movie) => Movie.create(movie)))
-    }
+    };
     storeData(moviesArray);
-  
+
     return res.status(200).send(moviesArray);
 }

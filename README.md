@@ -30,7 +30,7 @@ docker compose up
 To use WebbyLab Movie API, follow these steps:
 
 * Feel free to import postman collection by the link: [WebbyLab Movie API Postman collection](https://www.getpostman.com/collections/ff992216bae21b20847e);
-* To import data from .txt file through simplest gui, you should open [http://localhost:8000/api/v1/import];
+* To import data from .txt file through simplest gui, you should go to <http://localhost:8000/api/v1/import>;
 * Clone current repository to your local machine;
 * Enjoy.
 

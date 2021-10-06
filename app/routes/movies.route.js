@@ -4,10 +4,8 @@ const multer = require('multer');
 const path = require('path');
 const { stringify } = require('querystring');
 
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
 
 router
     .post('/create', controller.createOne)
@@ -17,8 +15,5 @@ router
     .get('/title/:title', controller.findOneByTitle)
     .get('/actor/:actor', controller.findAllByActor)
     .post('/import', upload.single("importedFile"), controller.importFromFile);
-    // .post('/import', controller.sendImportPage);
-
-
 
 module.exports = router;

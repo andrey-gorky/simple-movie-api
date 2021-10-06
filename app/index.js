@@ -1,15 +1,11 @@
 const express = require('express');
 
 const sequelize = require('./util/database.util');
-const User = require('./models/users.model');
 const Movie = require('./models/movies.model');
 const path = require('path');
 const multer = require('multer');
-// const readline = require('readline');
-// const fs = require('fs');
 
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +17,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/v1', require('./routes/index.route'));
-app.use('/api/v1/users', require('./routes/users.route'));
 app.use('/api/v1/movies', require('./routes/movies.route'));
 app.get('/api/v1/import', (req, res) => res.sendFile(path.join(__dirname + "/view/import.html")));
 

@@ -81,7 +81,7 @@ exports.importFromFile = (req, res, next) => {
     let moviesArray = [];
     let movie = {}
     
-    multerText.some((line) => {
+    multerText.forEach((line) => {
         line.startsWith("Title: ") ? movie.title = line.split("Title: ")[1] :
         line.startsWith("Release Year: ") ? movie.release = parseInt(line.split("Release Year: ")[1], 10) :
         line.startsWith("Format: ") ? movie.format = line.split("Format: ")[1] :
@@ -89,10 +89,10 @@ exports.importFromFile = (req, res, next) => {
         moviesArray.push(movie)
     });
 
-    const pushMoviesArray = async (moviesArray) => {
+    const storeData = async (moviesArray) => {
         await Promise.all(moviesArray.map((movie) => Movie.create(movie)))
     }
-    pushMoviesArray(moviesArray);
+    storeData(moviesArray);
   
     return res.status(200).send(moviesArray);
 }

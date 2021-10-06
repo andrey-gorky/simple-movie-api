@@ -31,8 +31,8 @@ exports.deleteOne = (req, res, next) => {
         .catch(error => res.status(500).json(error));
 }
 
-exports.findOne = (req, res, next) => {
-    return Movie
+exports.findOne = async (req, res, next) => {
+    await Movie
         .findByPk(req.params.id)
         .then(movie => {
             if (movie) return res.status(200).send(movie);
@@ -49,9 +49,9 @@ exports.findAll = async (req, res, next) => {
         });    
 }
 
-exports.findOneByTitle = (req, res, next) => {
+exports.findOneByTitle = async (req, res, next) => {
     const title = req.params.title
-    return Movie
+    await Movie
         .findAll({ where: { title: `${title}` } })
         .then(movie => {
             if (!movie) return res.status(404).json({message: "Movie with given title not found"});
@@ -62,7 +62,7 @@ exports.findOneByTitle = (req, res, next) => {
 
 exports.findAllByActor = async (req, res, next) => {
     const actor = req.params.actor
-    return Movie
+    await Movie
         .findAll({ where: { stars: { [Op.contains]: [ { "name": `${actor}` } ] } } })
         .then(movie => {
             if (!movie) return res.status(404).json({message: "Movie with given actor not found"});
@@ -78,11 +78,6 @@ exports.importFromFile = (req, res, next) => {
   
     const multerText = Buffer.from(file.buffer).toString('utf-8').split(/\r?\n/);
     const filteredMovies = multerText.filter(line => line !== "")
-
-    const storeData = async (movie) => {
-        await Movie.create(movie);
-    };
-
     let moviesArray = [];
     let movie = {}
 

@@ -94,14 +94,5 @@ exports.importFromFile = (req, res, next) => {
     };
     storeData(moviesArray);
 
-    // moviesArray.forEach(async (movie) => {
-    //     await Movie
-    //         .create(movie)
-    // })
-
-    const result = {
-      fileText: multerText,
-    };
-  
     return res.status(200).send(moviesArray);
 }

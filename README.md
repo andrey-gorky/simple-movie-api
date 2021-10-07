@@ -25,6 +25,11 @@ Run the image:
 docker compose up
 ```
 
+In case if image won't run at first time, just try to rerun it :) :
+```
+docker compose up
+```
+
 ## Using WebbyLab Movie API
 
 To use WebbyLab Movie API, follow these steps:
